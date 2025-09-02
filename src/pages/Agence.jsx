@@ -45,7 +45,7 @@ const Agence = () => {
   });
 
   return (
-    <div className="text-black bg-white">
+    <div className="text-black">
       <div className="section1">
         <div
           ref={imageDivRef}
