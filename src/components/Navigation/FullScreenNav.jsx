@@ -1,11 +1,92 @@
-import React from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
+import React, { useRef } from "react";
+import { useContext } from "react";
+import { NavbarContext } from "../../context/NavContext";
 
 const FullScreenNav = () => {
+  const fullNavLinksRef = useRef(null);
+  const fullScreenRef = useRef(null);
+  const [navOpen, setNavOpen] = useContext(NavbarContext);
+
+  function gsapAnimation() {
+    const tl = gsap.timeline();
+    tl.from(".stairing", {
+      delay: 0.5,
+      height: 0,
+      stagger: {
+        amount: -0.2,
+      },
+    });
+    tl.from(fullNavLinksRef.current, {
+      opacity: 0,
+    });
+    tl.from(".link", {
+      opacity: 0,
+      rotateX: 90,
+      stagger: {
+        amount: 0.2,
+      },
+    });
+    tl.from(".navlink", {
+      opacity: 1,
+    });
+  }
+  function gsapAnimationReverse() {
+    const tl = gsap.timeline();
+    tl.from(".stairing", {
+      delay: 0.5,
+      height: 0,
+      stagger: {
+        amount: -0.2,
+      },
+    });
+    tl.from(fullNavLinksRef.current, {
+      opacity: 0,
+    });
+    tl.from(".link", {
+      opacity: 0,
+      rotateX: 90,
+      stagger: {
+        amount: 0.2,
+      },
+    });
+  }
+
+  useGSAP(
+    function () {
+      if (navOpen) {
+        gsap.to(".fullScreenNav", {
+          display: "block",
+        });
+        gsapAnimation();
+      } else {
+        gsap.to(".fullScreenNav", {
+          display: "none",
+        });
+      }
+    },
+    [navOpen]
+  );
   return (
-    <div className="h-screen overflow-hidden text-white absolute w-full ">
+    <div
+      ref={fullScreenRef}
+      id="fullScreenNav"
+      className="fullScreenNav hidden h-screen overflow-hidden text-white absolute w-full z-50"
+    >
+      <div className="h-screen w-full fixed">
+        <div className="h-full flex w-full">
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+          <div className="stairing h-full w-1/5 bg-black"></div>
+        </div>
+      </div>
+
       {/* fulldiv1 */}
-      <div className="">
-        <div className="flex w-full p-2 items-start justify-between">
+      <div ref={fullNavLinksRef} className="relative">
+        <div className="navLink flex w-full p-2 items-start justify-between">
           <div>
             <div className="w-21">
               <svg
@@ -22,7 +103,10 @@ const FullScreenNav = () => {
             </div>
           </div>
 
-          <div className="h-40 w-40 -mt-10 -mr-10 p-1 cursor-pointer">
+          <div
+            onClick={() => setNavOpen(false)}
+            className="cross h-40 w-40 -mt-10 -mr-10 p-1 cursor-pointer"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -38,14 +122,14 @@ const FullScreenNav = () => {
           </div>
         </div>
         <div className="-mt-10">
-          <div className="link relative border-t-1 border-gray-400 ">
+          <div className="link origin-top relative border-t-1 border-gray-400 ">
             <h1 className="uppercase font-[font2] text-[8vw] text-center leading-17 pt-4 ">
               projets
             </h1>
             <div className="moveLink absolute flex top-0 bg-[#d3fd50] ">
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -56,7 +140,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -69,7 +153,7 @@ const FullScreenNav = () => {
               </div>
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -80,7 +164,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -94,14 +178,14 @@ const FullScreenNav = () => {
             </div>
           </div>
           {/* Agence */}
-          <div className="link relative border-t-1 border-gray-400 ">
+          <div className="link origin-top relative border-t-1 border-gray-400 ">
             <h1 className="uppercase font-[font2] text-[8vw] text-center leading-17 pt-4 ">
               Agence
             </h1>
             <div className="moveLink absolute flex top-0 bg-[#d3fd50] ">
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -112,7 +196,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -125,7 +209,7 @@ const FullScreenNav = () => {
               </div>
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -136,7 +220,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -151,14 +235,14 @@ const FullScreenNav = () => {
           </div>
 
           {/* Contact */}
-          <div className="link relative border-t-1 border-gray-400 ">
+          <div className="link origin-top relative border-t-1 border-gray-400 ">
             <h1 className="uppercase font-[font2] text-[8vw] text-center leading-17 pt-4 ">
               Contact
             </h1>
             <div className="moveLink absolute flex top-0 bg-[#d3fd50] ">
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -169,7 +253,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -182,7 +266,7 @@ const FullScreenNav = () => {
               </div>
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -193,7 +277,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -208,14 +292,14 @@ const FullScreenNav = () => {
           </div>
 
           {/* Blogue */}
-          <div className="link relative border-y-1 border-gray-400 ">
+          <div className="link origin-top relative border-y-1 border-gray-400 ">
             <h1 className="uppercase font-[font2] text-[8vw] text-center leading-17 pt-4 ">
               Blogue
             </h1>
             <div className="moveLink absolute flex top-0 bg-[#d3fd50] ">
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -226,7 +310,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -239,7 +323,7 @@ const FullScreenNav = () => {
               </div>
               {/* div content 1 */}
               <div className="moveX flex items-center gap-4 ">
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -250,7 +334,7 @@ const FullScreenNav = () => {
                   />
                 </div>
 
-                <h2 className="leading-17 pt-4 whitespace-nowrap text-black text-[8vw] font-[font2] uppercase ">
+                <h2 className="leading-17 text-black pt-4 whitespace-nowrap text-redbg-black text-[8vw] font-[font2] uppercase ">
                   Pour tout voir
                 </h2>
                 <div className="object-cover h-15 w-45 rounded-full -mb-2">
@@ -270,3 +354,5 @@ const FullScreenNav = () => {
 };
 
 export default FullScreenNav;
+
+//2:44

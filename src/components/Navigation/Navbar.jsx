@@ -1,8 +1,11 @@
 import React from "react";
 import { useRef } from "react";
+import { useContext } from "react";
+import { NavbarContext } from "../../context/NavContext";
 
 const Navbar = () => {
   const navGreenRef = useRef(null);
+  const [navOpen, setNavOpen] = useContext(NavbarContext);
   return (
     <div className="flex fixed items-start justify-between to-0 w-full  z-4">
       <div className="p-2">
@@ -21,6 +24,7 @@ const Navbar = () => {
         </div>
       </div>
       <div
+      onClick={()=>setNavOpen(true)}
         onMouseEnter={() => (navGreenRef.current.style.height = "100%")}
         onMouseLeave={() => (navGreenRef.current.style.height = "0%")}
         className=" h-9 w-46 relative bg-black group"
